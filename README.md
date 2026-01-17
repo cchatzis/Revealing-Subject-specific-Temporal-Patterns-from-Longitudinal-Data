@@ -1,8 +1,6 @@
 # Revealing-Subject-specific-Temporal-Patterns-from-Longitudinal-Data
 
-This repository contains the official code for the paper:
----------------
-This repository contains data and code to reproduce the findings and figures presented in the manuscript.
+This repository contains the official code for the paper.
 
 ### Data Availability
 Individual-level clinical data from the COPSAC<sub>2010</sub> cohort are not publicly available to protect participant privacy, in accordance with the Danish Data Protection Act and European Regulation 2016/679 of the European Parliament and of the Council (GDPR) that prohibit distribution even in pseudo-anonymized form. Data can be made available under a joint research collaboration by contacting COPSAC’s data protection officer (administration@dbac.dk). 

@@ -34,7 +34,7 @@ The reprlicability experiments in the paper can be re-run as follows:
 
 ### Reproducing the paper plots
 
-This can be done by running the appropriate cells from `paper_plots.ipynb`.
+This can be done by running the appropriate cells from `paper_plots.ipynb`. The factor plots plot the best-performing run (in terms of total loss) from the reproducibility check.
 
 
 ## Directory Structure

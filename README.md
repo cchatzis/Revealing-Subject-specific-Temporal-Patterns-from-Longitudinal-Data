@@ -8,6 +8,17 @@ Individual-level clinical data from the COPSAC<sub>2010</sub> cohort are not pub
 ### Important note
 
 > ⚠️ We are utilizing the latest version of [MatCoupLy](https://github.com/MarieRoald/matcouply) with the initial imputation from factors disabled.
+> To have the exact same toolbox as us, download the latest version of MatCoupLy and comment the following lines in `decomposition.py`:
+>
+> ```
+> 943    if mask is not None:
+> 944        if init == "random" or init == "svd" or init == "threshold_svd":
+> 945            matrices = _update_imputed(tensor_slices=list(matrices), mask=mask, decomposition=None, method="mode-3")
+> 946         else:  # If factors are provided from a "warmer" start (e.g. parafac2_als) use the factor estimates as initial guesses
+> 947             matrices = _update_imputed(tensor_slices=list(matrices), mask=mask, decomposition=cmf, method="factors")
+> ```
+> The reason behind this is that initially imputing entries in a normalized dataset will result in entries higher in magnitude, which will affect the results. A pull request with a fix is planned.
+
 
 ### Reproducing the reproducibility results
 

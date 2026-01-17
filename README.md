@@ -36,7 +36,7 @@ The reprlicability experiments in the paper can be re-run as follows:
 
 ### Reproducing the paper plots
 
-
+This can be done by running the appropriate cells from `paper_plots.py`.
 
 
 ## Directory Structure

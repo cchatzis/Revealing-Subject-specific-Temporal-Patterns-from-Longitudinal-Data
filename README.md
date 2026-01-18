@@ -17,7 +17,7 @@ Individual-level clinical data from the COPSAC<sub>2010</sub> cohort are not pub
 > 946         else:  # If factors are provided from a "warmer" start (e.g. parafac2_als) use the factor estimates as initial guesses
 > 947             matrices = _update_imputed(tensor_slices=list(matrices), mask=mask, decomposition=cmf, method="factors")
 > ```
-> The reason behind this is that initially imputing entries in a normalized dataset will result in entries higher in magnitude, which will affect the results. A pull request with a fix is planned.
+> The reason behind this is that initially imputing entries in a normalized dataset will result in entries higher in magnitude, which will affect the results. The [issue is raised](https://github.com/MarieRoald/matcouply/issues/12) and a pull request with a fix is planned.
 
 
 ### Reproducing the reproducibility results

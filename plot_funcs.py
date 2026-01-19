@@ -1,5 +1,6 @@
 from numpy.linalg import norm
 import matplotlib.pyplot as plt
+import pandas as pd
 
 import numpy as np
 import tensorly as tl
@@ -480,7 +481,7 @@ def plot_metabolomics_profile_component(factors,comp,comp_i,axes,plot_legend=Tru
     else:
         axes.set_xticks(xticks,[],fontsize=5)
 
-def plot_metabolomics_stratified_profiles_component(factors,homair,bmi_full,axes,comp,plot_title=False,plot_legend=False,plot_xticks=False,time_points=None):
+def plot_metabolomics_stratified_profiles_component(factors,group,axes,comp,plot_title=False,plot_legend=False,plot_xticks=False,time_points=None):
 
     A, B, D = factors
     B2plot = deepcopy(B)
@@ -529,12 +530,13 @@ def plot_metabolomics_stratified_profiles_component(factors,homair,bmi_full,axes
         x = np.array(time_points, dtype=float)
         xticks = [0, 1, 2, 3, 4]
 
-    # Define groups (order preserved)
+    g = pd.Series(group, dtype="string").fillna("").to_numpy()
+
     groups = [
-        ("noIR-lower BMI",  (homair < 2.9) & (bmi_full < 25),  "NoIR, lower BMI",  'tab:blue'),
-        ("IR-lower BMI",    (homair >= 2.9) & (bmi_full < 25), "IR, lower BMI",    'tab:orange'),
-        ("IR-higher BMI",   (homair >= 2.9) & (bmi_full >= 25),"IR, higher BMI",   'tab:purple'),
-        ("noIR-higher BMI", (homair < 2.9) & (bmi_full >= 25), "NoIR, higher BMI", 'tab:cyan'),
+        ("noIR-lower BMI",   g == "noIR-lower BMI",   "NoIR, lower BMI",  "tab:blue"),
+        ("IR-lower BMI",     g == "IR-lower BMI",     "IR, lower BMI",    "tab:orange"),
+        ("IR-higher BMI",    g == "IR-higher BMI",    "IR, higher BMI",   "tab:purple"),  # <-- THIS label
+        ("noIR-higher BMI",  g == "noIR-higher BMI",  "NoIR, higher BMI", "tab:cyan"),
     ]
 
     for key, mask, label, color in groups:

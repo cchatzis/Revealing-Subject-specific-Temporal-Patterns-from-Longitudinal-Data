@@ -725,7 +725,7 @@ def plot_sensitization_profiles_stratified_component(factors,axes,meta,comp,plot
             return "Vacuum", 'tab:green'
 
     for bv in bmi_vals:
-        if bv == 3: continue
+        # if bv == 3: continue
         idx = group_idx[bv]
         if idx.size == 0:
             continue

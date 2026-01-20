@@ -19,36 +19,19 @@ Individual-level clinical data from the COPSAC<sub>2010</sub> cohort are not pub
 > ```
 > The reason behind this is that initially imputing entries in a normalized dataset will result in entries higher in magnitude, which will affect the results. The [issue is raised](https://github.com/MarieRoald/matcouply/issues/12) and a pull request with a fix is planned.
 
+### Analysis outline
 
-### Reproducing the reproducibility results
+The notebooks `metabolomics.ipynb` and `sensitization.ipynb` outlines the analysis of this work in the metabolomics and sensitization datasets, respectively.
 
-> ⚠️ This step can take several hours on CPU.
+### Reproducing the paper figures
 
-The reproducibility experiments in the paper can be re-run as follows:
+**Factor plots:** The way we compute and plot factors is described in `metabolomics.ipynb` and `sensitization.ipynb`. In our case, the best performing run from the reproduciblity check is plotted, which we have supplied in the results folder. To reproduce the plot using the our *pre-fit* models you may use `paper_plots.ipynb`.
 
-1. Pre-process the data
-2. Run `uniqueness_check.py <model> <r> <l_B> <dataset> <gender>`, where: `<model>` is chosen from `cmf, parafac2` `cp`, `<r>` denotes the number of componets, `<l_B>` can be used to optionally include ridge penalty on all factors, `<dataset>` is one of `-m` and `-s`, with `-m` indicating the metabolomics dataset while `-s` the sensitization, and lastly `<gender>` indicates the gender of the subjects to use in the analysis. The `<gender>` argument has no effect when runing with `-s`. Running this will produce the file `<dataset>/results/uniqueness/factors_<model>_<r>_components_l_B_<l_B>_<gender>.pkl`, which is a pickle object containt a list of tuples in the format `(factors, loss)`.
-3. Run `uniquenes_analysis_<dataset>.ipynb` to obtain an overview of the reproducibility results for all models. This notebook produces `<dataset>/df_A_uniq_<gender>.pkl` and `<dataset>/df_CB_uniq_<gender>.pkl` which contain the FMS_A and FMS_C*B values to plot in the boxplots of the paper.
-4. Run the respective cells in `paper_plots.ipynb` to reproduce the exact figure of the paper.
+**Reproducibility results:** The script `uniqueness_check.py <model> <r> 0 <dataset> <gender>` runs the reproducibility check for the given model, dataset, rank and gender (only applicable in metabolomics). The output of our runs is stored in `Metabolomics/results/uniqueness/` and `Sensitization/results/uniqueness/`. To reproduce the plots of the paper from our runs you can use `paper_plots.ipynb`.
 
-### Reproducing the replicability results
+**Replicability results:** The script `replicability_check.py <model> <r> 0 <dataset> <gender> <splits>` runs the replicability check for the given model, dataset, rank and gender (only applicable in metabolomics). The output of our runs is stored in `Metabolomics/results/replicability/` and `Sensitization/results/replicability/`. To reproduce the plots of the paper from our runs you can use `paper_plots.ipynb`.
 
-> ⚠️ This step can take several hours on CPU.
-
-The reprlicability experiments in the paper can be re-run as follows:
-
-1. Pre-process the data
-2. Run `replicability_check.py <model> <r> <l_B> <dataset> <gender>`, where: `<model>` is chosen from `cmf, parafac2` `cp`, `<r>` denotes the number of componets, `<l_B>` can be used to optionally include ridge penalty on all factors, `<dataset>` is one of `-m` and `-s`, with `-m` indicating the metabolomics dataset while `-s` the sensitization, and lastly `<gender>` indicates the gender of the subjects to use in the analysis. The `<gender>` argument has no effect when runing with `-s`. Running this will produce the file `<dataset>/results/uniqueness/factors_<model>_<r>_components_l_B_<l_B>_<gender>.pkl`, which is a pickle object containt a list of tuples in the format `(factors, loss)`.
-3. Run `replicability_analysis_<dataset>.ipynb` to obtain an overview of the reproducibility results for all models. This notebook produces `<dataset>/df_A_replic_<gender>.pkl` and `<dataset>/df_CB_replic_<gender>.pkl` which contain the FMS_A and FMS_C*B values to plot in the boxplots of the paper.
-4. Run the respective cells in `paper_plots.ipynb` to reproduce the exact figure of the paper.
-
-
-### Reproducing the paper plots
-
-This can be done by running the appropriate cells from `paper_plots.ipynb`. The factor plots plot the best-performing run (in terms of total loss) from the reproducibility check.
-
-
-## Directory Structure
+### Directory Structure
 
 ```
 .
@@ -63,7 +46,7 @@ This can be done by running the appropriate cells from `paper_plots.ipynb`. The 
 │   ├── df_A_replic_males.pkl
 │   ├── df_CB_replic_males.pkl
 │   ├── df_A_replic_females.pkl
-│   ├── df_CB_replic_females.pkl
+│   └── df_CB_replic_females.pkl
 ├── Sensitization/
 │   └── results/
 │   │   └── uniqueness/        # Contains intermediate uniqueness-related results 
@@ -71,7 +54,9 @@ This can be done by running the appropriate cells from `paper_plots.ipynb`. The 
 │   ├── df_A_uniq.pkl
 │   ├── df_CB_uniq.pkl
 │   ├── df_A_replic.pkl
-│   ├── df_CB_replic.pkl
+│   └── df_CB_replic.pkl
+├── metabolomics.ipynb # outline of the metabolomics data analysis
+├── sensitization.ipynb # outline of the sensitization data analysis
 ├── uniqueness_check.py
 ├── replicability_check.py
 ├── uniqueness_analysis_metabolomics.py

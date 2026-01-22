@@ -65,7 +65,7 @@ The notebooks `metabolomics.ipynb` and `sensitization.ipynb` outlines the analys
 ├── replicability_analysis_sensitization.py
 ├── paper_plots.ipynb            # reproduces the plots in the paper
 ├── plot_funcs.py            # utility functions supporting paper_plots.py
-├── requirements.txt            # requirements for python virtual env
+└── requirements.txt            # requirements for python virtual env
 ```
 
 ## Citation

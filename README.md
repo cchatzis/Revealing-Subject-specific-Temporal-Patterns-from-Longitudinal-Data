@@ -70,10 +70,12 @@ The notebooks `metabolomics.ipynb` and `sensitization.ipynb` outlines the analys
 
 ## Citation
 
-<!-- @inproceedings{your_key_2026,
-  title        = {Revealing Subject-specific Temporal Patterns from Longitudinal Data},
-  author       = {Christos Chatzis, David Horner, Rasmus Bro, Ann-Marie Malby Schoos, Morten A. Rasmussen and Evrim Acar},
-  booktitle    = {Venue Name},
+@inproceedings{Chatzis2026.02.01.703114,
+  title        = {Revealing Subject-Specific Temporal Patterns from Longitudinal Data},
+  author       = {Chatzis, Christos and Horner, David and Bro, Rasmus and Schoos, Ann-Marie Malby and Rasmussen, Morten Arendt and Acar, Evrim},
+  booktitle    = {bioRxiv},
   year         = {2026},
-  url          = {https://arxiv.org/abs/xxxx.xxxxx}
-} -->
+  url          = {https://www.biorxiv.org/content/early/2026/02/03/2026.02.01.703114},
+  publisher = {Cold Spring Harbor Laboratory},
+  doi = {10.64898/2026.02.01.703114}
+}

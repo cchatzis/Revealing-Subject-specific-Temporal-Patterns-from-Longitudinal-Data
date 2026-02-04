@@ -70,7 +70,7 @@ The notebooks `metabolomics.ipynb` and `sensitization.ipynb` outlines the analys
 
 ## Citation
 ```
-@inproceedings{Chatzis2026.02.01.703114,
+@artcile{Chatzis2026.02.01.703114,
   title        = {Revealing Subject-Specific Temporal Patterns from Longitudinal Data},
   author       = {Chatzis, Christos and Horner, David and Bro, Rasmus and Schoos, Ann-Marie Malby and Rasmussen, Morten Arendt and Acar, Evrim},
   booktitle    = {bioRxiv},

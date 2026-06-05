@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20554543.svg)](https://doi.org/10.5281/zenodo.20554543)
+
 # Revealing-Subject-specific-Temporal-Patterns-from-Longitudinal-Data
 
 This repository contains the official code for the paper.

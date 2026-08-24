@@ -530,14 +530,29 @@ def plot_metabolomics_stratified_profiles_component(factors,group,axes,comp,plot
         x = np.array(time_points, dtype=float)
         xticks = [0, 1, 2, 3, 4]
 
-    g = pd.Series(group, dtype="string").fillna("").to_numpy()
+    group_arr = pd.Series(group, dtype="string").fillna("").to_numpy()
+    unique_vals = set(group_arr)
 
-    groups = [
-        ("noIR-lower BMI",   g == "noIR-lower BMI",   "NoIR, lower BMI",  "tab:blue"),
-        ("IR-lower BMI",     g == "IR-lower BMI",     "IR, lower BMI",    "tab:orange"),
-        ("IR-higher BMI",    g == "IR-higher BMI",    "IR, higher BMI",   "tab:purple"),  # <-- THIS label
-        ("noIR-higher BMI",  g == "noIR-higher BMI",  "NoIR, higher BMI", "tab:cyan"),
-    ]
+    ir_bmi_labels = {"noIR-lower BMI", "IR-lower BMI", "IR-higher BMI", "noIR-higher BMI"}
+
+    if unique_vals & ir_bmi_labels:
+        # original 4-way grouping
+        g = group_arr
+        groups = [
+            ("noIR-lower BMI",   g == "noIR-lower BMI",   "NoIR, lower BMI",  "tab:blue"),
+            ("IR-lower BMI",     g == "IR-lower BMI",     "IR, lower BMI",    "tab:orange"),
+            ("IR-higher BMI",    g == "IR-higher BMI",    "IR, higher BMI",   "tab:purple"),
+            ("noIR-higher BMI",  g == "noIR-higher BMI",  "NoIR, higher BMI", "tab:cyan"),
+        ]
+    elif unique_vals <= {"1", "2", ""}:
+        # binary male/female grouping
+        g = pd.to_numeric(pd.Series(group_arr), errors="coerce").to_numpy()
+        groups = [
+            ("male",   g == 1, "Male",   "tab:blue"),
+            ("female", g == 2, "Female", "tab:red"),
+        ]
+    else:
+        raise ValueError(f"Unrecognized group values: {unique_vals}")
 
     for key, mask, label, color in groups:
         idx = np.where(mask)[0]
@@ -559,7 +574,7 @@ def plot_metabolomics_stratified_profiles_component(factors,group,axes,comp,plot
         # Shaded band and curve
         axes.fill_between(x, center - sem, center + sem, alpha=0.25, color=color, linewidth=0)
         axes.plot(x, center, label=label, alpha=0.9, color=color, linewidth=1.5)
-        axes.set_ylim([0,0.078])
+        # axes.set_ylim([0,0.078])
         axes.grid(True)
         axes.tick_params(labelsize=5)
 

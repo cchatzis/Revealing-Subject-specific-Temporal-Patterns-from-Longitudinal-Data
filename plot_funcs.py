@@ -651,7 +651,7 @@ def plot_sensitization_profiles_component(factors,comp,comp_i,axes,plot_legend=T
     for subj in range(K):
         axes.grid(True)
         axes.plot(x,B2plot[subj][:, comp], alpha=0.3, color='gray', linewidth=0.7)
-        axes.set_ylim([0,0.28])
+        axes.set_ylim([0,0.45])
 
     if plot_title is True:
         axes.set_title(
@@ -670,7 +670,7 @@ def plot_sensitization_profiles_component(factors,comp,comp_i,axes,plot_legend=T
 
     axes.tick_params(labelsize=5)
 
-def plot_sensitization_profiles_stratified_component(factors,axes,meta,comp,plot_title=False,plot_legend=False,plot_xticks=False,time_points=None):
+def plot_sensitization_profiles_stratified_component(factors,axes,meta=None,comp=None,disease_df=None,plot_title=False,plot_legend=False,plot_xticks=False,time_points=None,ylim=(0,0.06)):
 
     A, B, D = factors
 
@@ -713,20 +713,54 @@ def plot_sensitization_profiles_stratified_component(factors,axes,meta,comp,plot
                 B2plot[k][:, r] *= D[k, r]
         
 
-    # Precompute indices per BMI category (sorted for deterministic coloring)
-    bmi_vals = np.unique(meta)
-    group_idx = {bv: np.where(meta == bv)[0] for bv in bmi_vals}
+    if disease_df is not None:
+        # Mutually-exclusive grouping by exact diagnosis combination, e.g. a
+        # subject with both asthma and AD (but not AR) falls only in the
+        # "Asthma+AD" group, not also in standalone "Asthma"/"AD" groups.
+        disease_cols = [
+            ('AsthmaDiagnosisEver', 'Asthma'),
+            ('AtopicDermatitisDiagnosisEver', 'AD'),
+            ('AR_ever', 'AR'),
+        ]
+        flags = np.stack([disease_df[col].to_numpy() == 1 for col, _ in disease_cols], axis=1)
+        names = np.array([name for _, name in disease_cols])
 
-    # Color/label mapping
-    def bmi_info(bv):
-        if bv == 1:
-            return "Natural", 'tab:red'
-        elif bv == 2:
-            return "C-section", 'tab:blue'
-        elif bv == 3:
-            return "Vacuum", 'tab:green'
+        combo = np.array([
+            '+'.join(names[row]) if row.any() else 'Healthy'
+            for row in flags
+        ])
 
-    for bv in bmi_vals:
+        palette = {
+            'Healthy':          'tab:gray',
+            'Asthma':           'tab:red',
+            'AD':               'tab:blue',
+            'AR':               'tab:green',
+            'Asthma+AD':        'tab:orange',
+            'Asthma+AR':        'tab:purple',
+            'AD+AR':            'tab:brown',
+            'Asthma+AD+AR':     'tab:pink',
+        }
+
+        group_labels = list(palette.keys())
+        group_idx = {label: np.where(combo == label)[0] for label in group_labels}
+
+        def group_info(label):
+            return label, palette[label]
+    else:
+        # Precompute indices per BMI category (sorted for deterministic coloring)
+        group_labels = np.unique(meta)
+        group_idx = {bv: np.where(meta == bv)[0] for bv in group_labels}
+
+        # Color/label mapping
+        def group_info(bv):
+            if bv == 1:
+                return "Natural", 'tab:red'
+            elif bv == 2:
+                return "C-section", 'tab:blue'
+            elif bv == 3:
+                return "Vacuum", 'tab:green'
+
+    for bv in group_labels:
         # if bv == 3: continue
         idx = group_idx[bv]
         if idx.size == 0:
@@ -753,25 +787,26 @@ def plot_sensitization_profiles_stratified_component(factors,axes,meta,comp,plot
             else:
                 sem[j] = 0.0
 
-        bmi_label, bmi_color = bmi_info(bv)
+        group_label, group_color = group_info(bv)
+        group_label = f"{group_label} (n={idx.size})"
 
         axes.set_axisbelow(True)
 
         # Shaded SEM band (no label to avoid legend dupes)
-        axes.fill_between(np.arange(J), center - sem, center + sem, alpha=0.25, color=bmi_color, linewidth=0)
+        axes.fill_between(np.arange(J), center - sem, center + sem, alpha=0.25, color=group_color, linewidth=0)
 
         # Central curve
-        axes.plot(np.arange(J), center, label=bmi_label, alpha=0.9, color=bmi_color, linewidth=1.5)
+        axes.plot(np.arange(J), center, label=group_label, alpha=0.9, color=group_color, linewidth=1.5)
         axes.tick_params(labelsize=5)
         axes.grid(True,zorder=0)
         axes.set_xticks(np.arange(J),[])
-        axes.set_ylim([0,0.06])
+        axes.set_ylim(ylim)
         if plot_title is True:
             axes.set_title("Stratified profiles (mean ± SEM)")
         if plot_xticks is True:
             axes.set_xticks(np.arange(J),time_points)
         if plot_legend is True:
-            axes.legend(loc=[-0.05,-0.85],ncols=2,fontsize=5)
+            axes.legend(loc='upper center',bbox_to_anchor=(0.5,-0.45),ncols=2,fontsize=4,frameon=False,columnspacing=0.8,handletextpad=0.4,handlelength=1.2,labelspacing=0.3)
             axes.set_xlabel("Time (years)",fontsize=5)
 
 def plot_sensitization_mean_profile_component(factors,axes,comp,plot_title=False,plot_legend=False,plot_xticks=False,time_points=None):
@@ -822,7 +857,7 @@ def plot_sensitization_mean_profile_component(factors,axes,comp,plot_title=False
         axes.plot(x, center, alpha=0.9, color='black', linewidth=1.5)
 
     axes.grid(True)
-    axes.set_ylim([0,0.03])
+    axes.set_ylim([0,0.04])
 
     if plot_xticks is True and plot_legend is True:
         axes.set_xticks(x,time_points)

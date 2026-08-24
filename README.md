@@ -59,6 +59,7 @@ The notebooks `metabolomics.ipynb` and `sensitization.ipynb` outlines the analys
 │   └── df_CB_replic.pkl
 ├── metabolomics.ipynb # outline of the metabolomics data analysis
 ├── sensitization.ipynb # outline of the sensitization data analysis
+├── simulation_experiment.ipynb # code to reproduce the simulated data experiment (Figure S.16)
 ├── uniqueness_check.py
 ├── replicability_check.py
 ├── uniqueness_analysis_metabolomics.py
